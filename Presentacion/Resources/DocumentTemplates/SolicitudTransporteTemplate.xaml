@@ -1,0 +1,227 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Plantilla: Solicitud de Transporte -->
+    <FlowDocument x:Key="SolicitudTransporteTemplate" 
+                  FontFamily="Arial" 
+                  FontSize="11"
+                  PageHeight="11in"
+                  PageWidth="8.5in"
+                  PagePadding="30">
+
+
+        
+            
+        <BlockUIContainer>
+            <Image Width="60" 
+           Height="60" 
+           Stretch="Uniform"
+           HorizontalAlignment="Center"
+           VerticalAlignment="Center"
+           Source="/Recursos/universidad_nacional_de_ingenieria.png"/>
+        </BlockUIContainer>
+
+        <Paragraph TextAlignment="Center" Margin="0">
+            <Bold FontFamily="Verdana" FontSize="16">
+                UNIVERSIDAD NACIONAL DE INGENIERÍA
+            </Bold>
+            <LineBreak/>
+            <Bold FontFamily="Verdana" FontSize="14">
+                SOLICITUD DE TRANSPORTE
+            </Bold>
+        </Paragraph>
+        
+        <!-- Tabla principal de datos -->
+        <Table CellSpacing="0" BorderBrush="Black" BorderThickness="2" Margin="0,0,0,0">
+            <Table.Columns>
+                <TableColumn Width="2*"/>
+                <TableColumn Width="1*"/>
+            </Table.Columns>
+            <TableRowGroup>
+                <!-- Fila 1: Nombre y Dependencia -->
+                <TableRow>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,1,1" Padding="5">
+                        <Paragraph Margin="0">
+                            <Run>Nombre del solicitante: </Run>
+                            <Run Text="{Binding NombreSolicitante, Mode=OneWay}"/>
+                        </Paragraph>
+                    </TableCell>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,0,1" Padding="5">
+                        <Paragraph Margin="0">
+                            <Run>Dependencia Solicitante: </Run>
+                            <Run Text="{Binding DependenciaSolicitante, Mode=OneWay}"/>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+                
+                <!-- Fila 2: Responsable y No. Pasajeros -->
+                <TableRow>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,1,1" Padding="5">
+                        <Paragraph Margin="0">
+                            <Run>Responsable de la Actividad: </Run>
+                            <Run Text="{Binding ResponsableActividad, Mode=OneWay}"/>
+                        </Paragraph>
+                    </TableCell>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,0,1" Padding="5">
+                        <Paragraph Margin="0">
+                            <Run>No. de pasajeros: </Run>
+                            <Run Text="{Binding NumeroPasajeros, Mode=OneWay}"/>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+                
+                <!-- Fila 3: Descripción de la actividad -->
+                <TableRow>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,0,1" Padding="5" ColumnSpan="2">
+                        <Paragraph Margin="0">
+                            <Run>Descripción de la Actividad: </Run>
+                            <Run Text="{Binding DescripcionActividad, Mode=OneWay}"/>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+                
+                <!-- Fila 4: Destino -->
+                <TableRow>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,0,1" Padding="5" ColumnSpan="2">
+                        <Paragraph Margin="0">
+                            <Run>Destino: </Run>
+                            <Run Text="{Binding Destino, Mode=OneWay}"/>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+                
+                <!-- Fila 5: Departamento, Municipio y Km -->
+                <TableRow>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,1,1" Padding="5">
+                        <Paragraph Margin="0">
+                            <Run>Departamento: </Run>
+                            <Run Text="{Binding Departamento, Mode=OneWay}"/>
+                        </Paragraph>
+                    </TableCell>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,0,1" Padding="5">
+                        <Paragraph Margin="0">
+                            <Run>Municipio: </Run>
+                            <Run Text="{Binding Municipio, Mode=OneWay}"/>
+                            <Run> | Km aprox.: </Run>
+                            <Run Text="{Binding KmAproximados, Mode=OneWay}"/>
+                            <Run> Km</Run>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+            </TableRowGroup>
+        </Table>
+
+        <!-- Tabla de Salida y Regreso -->
+        <Table CellSpacing="0" BorderBrush="Black" BorderThickness="2" Margin="0,0,0,0">
+            <Table.Columns>
+                <TableColumn Width="*"/>
+                <TableColumn Width="*"/>
+            </Table.Columns>
+            <TableRowGroup>
+                <!-- Encabezado Salida/Regreso -->
+                <TableRow>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,1,1" Padding="5">
+                        <Paragraph TextAlignment="Center" Margin="0">
+                            <Bold>Salida</Bold>
+                        </Paragraph>
+                    </TableCell>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,0,1" Padding="5">
+                        <Paragraph TextAlignment="Center" Margin="0">
+                            <Bold>Regreso</Bold>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+                
+                <!-- Fechas -->
+                <TableRow>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,1,1" Padding="5">
+                        <Paragraph Margin="0">
+                            <Run>Fecha: </Run>
+                            <Run Text="{Binding FechaSalida, Mode=OneWay}"/>
+                        </Paragraph>
+                    </TableCell>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,0,1" Padding="5">
+                        <Paragraph Margin="0">
+                            <Run>Fecha: </Run>
+                            <Run Text="{Binding FechaRegreso, Mode=OneWay}"/>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+                
+                <!-- Horas -->
+                <TableRow>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,1,1" Padding="5">
+                        <Paragraph Margin="0">
+                            <Run>Hora: </Run>
+                            <Run Text="{Binding HoraSalida, Mode=OneWay}"/>
+                        </Paragraph>
+                    </TableCell>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,0,1" Padding="5">
+                        <Paragraph Margin="0">
+                            <Run>Hora: </Run>
+                            <Run Text="{Binding HoraRegreso, Mode=OneWay}"/>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+            </TableRowGroup>
+        </Table>
+
+        <!-- Espacio para firma -->
+        <Paragraph Margin="0,30,0,0"> </Paragraph>
+        <Paragraph TextAlignment="Center" Margin="0">
+            <Bold>
+                <Run Text="{Binding NombreSolicitante, Mode=OneWay}"/>
+            </Bold>
+            <LineBreak/>
+            <Bold>Responsable de Departamento de Cultura UNI</Bold>
+        </Paragraph>
+
+        <!-- Sección para División de Servicios Administrativos -->
+        <Table CellSpacing="0" BorderBrush="Black" BorderThickness="2" Margin="0,20,0,0">
+            <Table.Columns>
+                <TableColumn Width="*"/>
+            </Table.Columns>
+            <TableRowGroup>
+                <TableRow>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,0,1" Padding="5">
+                        <Paragraph TextAlignment="Center" Margin="0">
+                            <Bold>PARA USO DE LA DIVISIÓN DE SERVICIOS ADMINISTRATIVOS</Bold>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell BorderBrush="Black" BorderThickness="0,0,0,1" Padding="5">
+                        <Paragraph Margin="0">
+                            <Run>Tipo de Vehículo: </Run>
+                            <Run Text="{Binding TipoVehiculo, Mode=OneWay}"/>
+                            <Run> | No. Placa: </Run>
+                            <Run Text="{Binding NumeroPlaca, Mode=OneWay}"/>
+                            <Run> | Color: </Run>
+                            <Run Text="{Binding ColorVehiculo, Mode=OneWay}"/>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell BorderBrush="Black" BorderThickness="0" Padding="5">
+                        <Paragraph TextAlignment="Center" Margin="0">
+                            <Bold>FIRMAS</Bold>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell BorderBrush="Black" BorderThickness="0" Padding="30,10,5,5">
+                        <Paragraph Margin="0">
+                            <Run>Nombre y Firma del Conductor:</Run>
+                        </Paragraph>
+                        <Paragraph Margin="0,20,0,0"> </Paragraph>
+                        <Paragraph Margin="0,10,0,0">
+                            <Run>Autorización:</Run>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+            </TableRowGroup>
+        </Table>
+
+    </FlowDocument>
+    
+</ResourceDictionary>

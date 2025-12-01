@@ -1,0 +1,122 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Plantilla: Solicitud de Espacios -->
+    <FlowDocument x:Key="SolicitudEspaciosTemplate" 
+                  FontFamily="Arial" 
+                  FontSize="11"
+                  PageHeight="11in"
+                  PageWidth="8.5in"
+                  PagePadding="50">
+        
+        <!-- Logo -->
+        <BlockUIContainer>
+            <Image Width="60" 
+                   Height="60" 
+                   Stretch="Uniform"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Source="/Recursos/universidad_nacional_de_ingenieria.png"/>
+        </BlockUIContainer>
+
+        <!-- Encabezado "Departamento de Cultura" al lado del logo -->
+        <Paragraph TextAlignment="Left" Margin="0,0,0,0" FontSize="10">
+            <Run>Departamento</Run>
+            <LineBreak/>
+            <Run>de Cultura</Run>
+        </Paragraph>
+
+        <!-- Fecha (alineada a la derecha en la misma altura) -->
+        <Paragraph Margin="0,0,0,0" TextAlignment="Right" FontSize="11">
+            <Run>Managua </Run>
+            <Run Text="{Binding FechaDocumento, Mode=OneWay}"/>
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,30,0,0"> </Paragraph>
+
+        <!-- Destinatario -->
+        <Paragraph Margin="0" FontSize="11">
+            <Run>Mac.-</Run>
+            <LineBreak/>
+            <Bold><Run Text="{Binding DestinatarioNombre, Mode=OneWay}"/></Bold>
+            <LineBreak/>
+            <Run Text="{Binding DestinatarioCargo, Mode=OneWay}"/>
+            <LineBreak/>
+            <Run>Su despacho</Run>
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,15,0,0"> </Paragraph>
+
+        <!-- Saludo -->
+        <Paragraph Margin="0" FontSize="11">
+            <Bold>
+                <Run>Estimado Mac. </Run>
+                <Run Text="{Binding DestinatarioNombre, Mode=OneWay}"/>
+            </Bold>
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,10,0,0"> </Paragraph>
+
+        <!-- Saludo cordial -->
+        <Paragraph Margin="0" FontSize="11" TextAlignment="Justify">
+            Reciba cordial saludo de parte del Departamento de Cultura
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,10,0,0"> </Paragraph>
+
+        <!-- Cuerpo - Solicitud -->
+        <Paragraph Margin="0" FontSize="11" TextAlignment="Justify">
+            Por este medio, me permito solicitarle el Departamento de Cultura DAE dentro su creación de promoción y discusión de la cultura y el arte entre los estudiantes universitario, exaltan talleres de apreciación intermedio realizados en el tiempo que disponen los jóvenes que se inscriben con el mismo.
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,10,0,0"> </Paragraph>
+
+        <!-- Solicitud específica -->
+        <Paragraph Margin="0" FontSize="11" TextAlignment="Justify">
+            Solicitud a usted que nos facilite el nuestro salón de danza, arte, coro el uso de salón Artelio donde se impartan artes talleres.
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,10,0,0"> </Paragraph>
+
+        <!-- Agradecimiento -->
+        <Paragraph Margin="0" FontSize="11" TextAlignment="Justify">
+            Agradeesco de antemano su comprensión y apoyo en la gestión correspondiente. Para cualquier información adicional, quedo a su disposición.
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,10,0,0"> </Paragraph>
+
+        <!-- Horario -->
+        <Paragraph Margin="0" FontSize="11">
+            Adjunto el presente horario de los talleres mencionados
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,30,0,0"> </Paragraph>
+
+        <!-- Cierre -->
+        <Paragraph Margin="0" FontSize="11" TextAlignment="Center">
+            Cordialmente
+        </Paragraph>
+
+        <!-- Espacio para firma -->
+        <Paragraph Margin="0,40,0,0"> </Paragraph>
+
+        <!-- Firma -->
+        <Paragraph TextAlignment="Center" Margin="0" FontSize="11">
+            <Bold>
+                <Run Text="{Binding FirmaNombre, Mode=OneWay}"/>
+            </Bold>
+            <LineBreak/>
+            <Run Text="{Binding FirmaCargo, Mode=OneWay}"/>
+        </Paragraph>
+
+    </FlowDocument>
+    
+</ResourceDictionary>

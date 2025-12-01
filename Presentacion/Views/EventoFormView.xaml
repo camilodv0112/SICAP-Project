@@ -1,0 +1,262 @@
+<Window x:Class="Presentacion.Views.EventoFormView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:core="clr-namespace:Presentacion.Core"
+        mc:Ignorable="d"
+        Title="Crear Nuevo Evento" Height="550" Width="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+
+    <Window.Resources>
+        <core:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="White" CornerRadius="10" BorderBrush="#002898" BorderThickness="1">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <!-- Header -->
+                <RowDefinition Height="*"/>    <!-- Form -->
+                <RowDefinition Height="Auto"/> <!-- Footer -->
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                <TextBlock Text="📅 Nuevo Evento" 
+                           FontSize="22" 
+                           Foreground="#002898" 
+                           HorizontalAlignment="Center"
+                           FontWeight="Bold"/>
+                <TextBlock Text="Ingrese los detalles básicos" 
+                           FontSize="12" 
+                           Foreground="Gray" 
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Form -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <!-- Nombre -->
+                    <TextBlock Text="Nombre del Evento *"/>
+                    <TextBox Text="{Binding NuevoEventoNombre, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <!-- Descripción -->
+                    <TextBlock Text="Descripción"/>
+                    <TextBox Text="{Binding NuevoEventoDescripcion, UpdateSourceTrigger=PropertyChanged}" 
+                             Height="60" TextWrapping="Wrap" AcceptsReturn="True"/>
+
+                    <!-- Fecha -->
+                    <TextBlock Text="Fecha *"/>
+                    <DatePicker SelectedDate="{Binding NuevoEventoFecha}" Margin="0,5,0,15" Height="30" FontSize="14"/>
+
+                    <!-- Horarios -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Hora Inicio (HH:mm) *"/>
+                            <TextBox Text="{Binding NuevoEventoHoraInicio, UpdateSourceTrigger=PropertyChanged}" ToolTip="Formato 24h ej: 09:00"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Hora Fin (HH:mm) *"/>
+                            <TextBox Text="{Binding NuevoEventoHoraFin, UpdateSourceTrigger=PropertyChanged}" ToolTip="Formato 24h ej: 11:00"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Salón -->
+                    <TextBlock Text="Salón / Ubicación *"/>
+                    <ComboBox ItemsSource="{Binding SalonesDisponibles}"
+                              SelectedItem="{Binding SelectedSalon}"
+                              DisplayMemberPath="Nombre"
+                              Margin="0,5,0,15"
+                              Height="35"
+                              FontSize="14"/>
+
+                    <!-- SECCIÓN: RECURSOS Y NECESIDADES -->
+                    <Border Background="#F5F5F5" CornerRadius="5" Padding="10" Margin="0,10,0,15">
+                        <StackPanel>
+                            <TextBlock Text="📦 Recursos y Necesidades" FontWeight="Bold" Foreground="#002898" Margin="0,0,0,10"/>
+                            
+                            <!-- Controles de Adición -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Categoría"/>
+                                    <ComboBox ItemsSource="{Binding CategoriasDisponibles}"
+                                              SelectedItem="{Binding SelectedCategoria}"
+                                              DisplayMemberPath="Nombre"
+                                              Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Subcategoría"/>
+                                    <ComboBox ItemsSource="{Binding SubcategoriasFiltradas}"
+                                              SelectedItem="{Binding SelectedSubcategoria}"
+                                              DisplayMemberPath="Nombre"
+                                              IsEnabled="{Binding IsCategoriaSelected}"
+                                              Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Cantidad"/>
+                                    <TextBox Text="{Binding NuevaNecesidadCantidad}" Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Observaciones (Opcional)"/>
+                                    <TextBox Text="{Binding NuevaNecesidadObservacion}" Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                                <Button Grid.Column="4" Content="➕ Agregar" 
+                                        Command="{Binding AddNecesidadCommand}"
+                                        VerticalAlignment="Bottom"
+                                        Height="30" Width="80"
+                                        Background="#4CAF50" Foreground="White"
+                                        BorderThickness="0">
+                                     <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="3"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                            </Grid>
+
+                            <!-- Lista de Necesidades Agregadas -->
+                            <DataGrid ItemsSource="{Binding NecesidadesAgregadas}" 
+                                      AutoGenerateColumns="False" 
+                                      Height="120"
+                                      CanUserAddRows="False"
+                                      IsReadOnly="True"
+                                      BorderBrush="#E0E0E0"
+                                      BorderThickness="1">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Recurso" Binding="{Binding SubcategoriaNombre}" Width="*"/>
+                                    <DataGridTextColumn Header="Cant." Binding="{Binding Cantidad}" Width="50"/>
+                                    <DataGridTextColumn Header="Obs." Binding="{Binding Observaciones}" Width="100"/>
+                                    <DataGridTemplateColumn Width="40">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="❌" 
+                                                        Command="{Binding DataContext.RemoveNecesidadCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                                        CommandParameter="{Binding}"
+                                                        Background="Transparent" BorderThickness="0" Foreground="Red" Cursor="Hand"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- SECCIÓN: PARTICIPANTES Y RESPONSABLES -->
+                    <Border Background="#F5F5F5" CornerRadius="5" Padding="10" Margin="0,0,0,15">
+                        <StackPanel>
+                            <TextBlock Text="👥 Personas Involucradas" FontWeight="Bold" Foreground="#002898" Margin="0,0,0,10"/>
+                            
+                            <TabControl Height="200">
+                                <!-- Pestaña Responsables -->
+                                <TabItem Header="Responsables">
+                                    <DataGrid ItemsSource="{Binding PersonalDisponible}" 
+                                              AutoGenerateColumns="False" 
+                                              CanUserAddRows="False"
+                                              BorderThickness="0">
+                                        <DataGrid.Columns>
+                                            <DataGridCheckBoxColumn Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" Width="30"/>
+                                            <DataGridTextColumn Header="Nombre Completo" Binding="{Binding Personal.NombreCompleto}" Width="*"/>
+                                            <DataGridTextColumn Header="Cargo" Binding="{Binding Personal.CargoNombre}" Width="150"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </TabItem>
+                                
+                                <!-- Pestaña Participantes -->
+                                <TabItem Header="Estudiantes">
+                                    <DataGrid ItemsSource="{Binding EstudiantesDisponibles}" 
+                                              AutoGenerateColumns="False" 
+                                              CanUserAddRows="False"
+                                              BorderThickness="0">
+                                        <DataGrid.Columns>
+                                            <DataGridCheckBoxColumn Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" Width="30"/>
+                                            <DataGridTextColumn Header="Nombre Completo" Binding="{Binding Estudiante.NombreCompleto}" Width="*"/>
+                                            <DataGridTextColumn Header="Carnet" Binding="{Binding Estudiante.Carnet}" Width="100"/>
+                                            <DataGridTextColumn Header="Carrera" Binding="{Binding Estudiante.CarreraNombre}" Width="*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </TabItem>
+                            </TabControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Mensaje de Error -->
+                    <TextBlock Text="{Binding ErrorMessage}" 
+                               Foreground="Red" 
+                               TextWrapping="Wrap" 
+                               Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"
+                               Margin="0,0,0,10"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Footer / Buttons -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                <Button Content="Cancelar" 
+                        Command="{Binding CancelCreateCommand}"
+                        Width="100" Height="35" 
+                        Background="#E0E0E0" Foreground="Black"
+                        Margin="0,0,10,0"
+                        BorderThickness="0">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                
+                <Button Content="Guardar Evento" 
+                        Command="{Binding SaveEventoCommand}"
+                        Width="140" Height="35" 
+                        Background="#002898" Foreground="White"
+                        BorderThickness="0"
+                        FontWeight="Bold">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

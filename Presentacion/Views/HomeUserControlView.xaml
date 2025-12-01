@@ -1,0 +1,141 @@
+﻿<UserControl x:Class="Presentacion.Views.HomeUserControlView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:Presentacion.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1000">
+    <UserControl.Resources>
+        <converters:DateToEventColorConverter x:Key="DateToEventColorConverter"/>
+    </UserControl.Resources>
+
+    <Grid Background="White" Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Calendario -->
+            <RowDefinition Height="Auto"/> <!-- Separador -->
+            <RowDefinition Height="*"/>    <!-- Cards -->
+        </Grid.RowDefinitions>
+
+        <!-- 1. Calendario Grande -->
+        <Viewbox Grid.Row="0" MaxHeight="400" HorizontalAlignment="Stretch" Margin="0,0,0,20">
+            <Calendar x:Name="MainCalendar" 
+                      SelectionMode="SingleDate"
+                      Background="White"
+                      BorderBrush="Transparent"
+                      Width="200">
+                <Calendar.CalendarDayButtonStyle>
+                    <Style TargetType="CalendarDayButton">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource DateToEventColorConverter}">
+                                    <Binding />
+                                    <Binding Path="DataContext.FechasConEventos" RelativeSource="{RelativeSource AncestorType=Calendar}"/>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="CalendarDayButton">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="15">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="LightGray"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#002898"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Calendar.CalendarDayButtonStyle>
+            </Calendar>
+        </Viewbox>
+
+        <!-- 2. Separador -->
+        <Border Grid.Row="1" 
+                Height="2" 
+                Background="#111111" 
+                Margin="0,0,0,20"
+                HorizontalAlignment="Stretch"/>
+
+        <!-- 3. Cards de Eventos -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Eventos}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="White" 
+                                BorderBrush="#E0E0E0" 
+                                BorderThickness="1" 
+                                CornerRadius="12" 
+                                Margin="10" 
+                                Width="300"
+                                Padding="20">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#000000" Opacity="0.1" BlurRadius="10" ShadowDepth="2"/>
+                            </Border.Effect>
+                            <StackPanel>
+                                <!-- Título -->
+                                <TextBlock Text="{Binding Nombre}" 
+                                           FontFamily="Verdana" 
+                                           FontSize="18" 
+                                           FontWeight="Bold" 
+                                           Foreground="#002898" 
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,10"/>
+                                
+                                <!-- Fecha y Hora -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="📅" Margin="0,0,5,0"/>
+                                    <TextBlock Text="{Binding Fecha, StringFormat=dd/MM/yyyy}" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                                    <TextBlock Text="🕒" Margin="0,0,5,0"/>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0:hh\:mm} - {1:hh\:mm}">
+                                                <Binding Path="HoraInicio"/>
+                                                <Binding Path="HoraFinal"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <!-- Ubicación -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="📍" Margin="0,0,5,0"/>
+                                    <TextBlock Text="{Binding SedeNombre}" FontWeight="SemiBold"/>
+                                    <TextBlock Text=" - "/>
+                                    <TextBlock Text="{Binding SalonNombre}"/>
+                                </StackPanel>
+
+                                <!-- Separador Interno -->
+                                <Separator Background="#EEEEEE" Margin="0,5,0,10"/>
+
+                                <!-- Descripción -->
+                                <TextBlock Text="{Binding Descripcion}" 
+                                           FontFamily="Arial" 
+                                           FontSize="14" 
+                                           Foreground="#555555" 
+                                           TextWrapping="Wrap"
+                                           MaxHeight="60"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

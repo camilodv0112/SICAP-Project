@@ -1,0 +1,170 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Plantilla: Justificación de Estudiante -->
+    <FlowDocument x:Key="JustificacionEstudianteTemplate" 
+                  FontFamily="Arial" 
+                  FontSize="11"
+                  PageHeight="11in"
+                  PageWidth="8.5in"
+                  PagePadding="50">
+        
+        <!-- Logo centrado -->
+        <BlockUIContainer>
+            <Image Width="60" 
+                   Height="60" 
+                   Stretch="Uniform"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="/Recursos/universidad_nacional_de_ingenieria.png"/>
+        </BlockUIContainer>
+
+        <!-- Encabezado -->
+        <Paragraph TextAlignment="Center" Margin="0,10,0,0" FontSize="11">
+            <Bold>UNIVERSIDAD NACIONAL DE INGENIERÍA</Bold>
+            <LineBreak/>
+            <Run>DIRECCIÓN DE ASUNTOS ESTUDIANTILES</Run>
+            <LineBreak/>
+            <Run>DEPARTAMENTO DE CULTURA UNIVERSITARIA</Run>
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,20,0,0"> </Paragraph>
+
+        <!-- Destinatario -->
+        <Paragraph Margin="0" FontSize="11">
+            <Bold>
+                <Run>ING. </Run>
+                <Run Text="{Binding DestinatarioNombre, Mode=OneWay}"/>
+            </Bold>
+            <LineBreak/>
+            <Run Text="{Binding DestinatarioCargo, Mode=OneWay}"/>
+            <LineBreak/>
+            <Run Text="{Binding DestinatarioInstitucion, Mode=OneWay}"/>
+        </Paragraph>
+
+        <!-- Fecha (alineada a la derecha) -->
+        <Paragraph Margin="0,10,0,0" TextAlignment="Right" FontSize="11">
+            <Run>Managua, </Run>
+            <Run Text="{Binding FechaDocumento, Mode=OneWay}"/>
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,15,0,0"> </Paragraph>
+
+        <!-- Saludo -->
+        <Paragraph Margin="0" FontSize="11">
+            <Bold>
+                <Run>Estimado Ing. </Run>
+                <Run Text="{Binding DestinatarioNombre, Mode=OneWay}"/>
+                <Run>:</Run>
+            </Bold>
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,10,0,0"> </Paragraph>
+
+        <!-- Saludo cordial -->
+        <Paragraph Margin="0" FontSize="11" TextAlignment="Justify">
+            Reciba un cordial saludo de parte del Departamento de Cultura y del mío propio.
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,10,0,0"> </Paragraph>
+
+        <!-- Cuerpo - Motivo del evento -->
+        <Paragraph Margin="0" FontSize="11" TextAlignment="Justify">
+            <Run>El motivo de la presente es para notificarle que el bachiller: </Run>
+            <Bold><Run Text="{Binding EstudianteSeleccionado.Nombre, Mode=OneWay}"/></Bold>
+            <Run>, participó el </Run>
+            <Bold><Run Text="{Binding FechaEvento, Mode=OneWay}"/></Bold>
+            <Run> de </Run>
+            <Bold><Run Text="{Binding HoraInicio, Mode=OneWay}"/></Bold>
+            <Run> a </Run>
+            <Bold><Run Text="{Binding HoraFin, Mode=OneWay}"/></Bold>
+            <Run> en, la celebración del </Run>
+            <Run Text="{Binding NombreEvento, Mode=OneWay}"/>
+            <Run>, actividad que nos fue orientada por nuestras máximas autoridades.</Run>
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,10,0,0"> </Paragraph>
+
+        <!-- Solicitud de apoyo -->
+        <Paragraph Margin="0" FontSize="11" TextAlignment="Justify">
+            <Run>Por lo que solicito de su apoyo para justificar la ausencia del bachiller por el gran apoyo brindado en esta actividad revolucionaria y al Departamento de Cultura UNI en la disciplina de </Run>
+            <Run Text="{Binding DisciplinaEvento, Mode=OneWay}"/>
+            <Run>.</Run>
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,15,0,0"> </Paragraph>
+
+        <!-- Datos del estudiante -->
+        <Paragraph Margin="0" FontSize="11">
+            <Bold>Datos del estudiante a justificar:</Bold>
+        </Paragraph>
+
+        <Paragraph Margin="0,5,0,0" FontSize="11">
+            <Bold>Estudiante: </Bold>
+            <Run Text="{Binding EstudianteSeleccionado.Nombre, Mode=OneWay}"/>
+        </Paragraph>
+
+        <Paragraph Margin="0" FontSize="11">
+            <Bold>Carnet: </Bold>
+            <Run Text="{Binding EstudianteSeleccionado.Carnet, Mode=OneWay}"/>
+        </Paragraph>
+
+        <Paragraph Margin="0" FontSize="11">
+            <Bold>Carrera: </Bold>
+            <Run Text="{Binding EstudianteSeleccionado.Carrera, Mode=OneWay}"/>
+        </Paragraph>
+
+        <Paragraph Margin="0" FontSize="11">
+            <Bold>Grupo: </Bold>
+            <Run Text="{Binding EstudianteSeleccionado.Grupo, Mode=OneWay}"/>
+        </Paragraph>
+
+        <Paragraph Margin="0" FontSize="11">
+            <Bold>Año académico: </Bold>
+            <Run Text="{Binding EstudianteSeleccionado.Año, Mode=OneWay}"/>
+        </Paragraph>
+
+        <Paragraph Margin="0" FontSize="11">
+            <Bold>Asignatura: </Bold>
+            <Run Text="{Binding AsignaturaEstudiante, Mode=OneWay}"/>
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,15,0,0"> </Paragraph>
+
+        <!-- Despedida -->
+        <Paragraph Margin="0" FontSize="11" TextAlignment="Justify">
+            Sin más que agregar y agradeciendo la atención a la presente me despido reiterando mis saludos.
+        </Paragraph>
+
+        <!-- Espacio -->
+        <Paragraph Margin="0,10,0,0"> </Paragraph>
+
+        <!-- Cierre -->
+        <Paragraph Margin="0" FontSize="11">
+            Cordialmente,
+        </Paragraph>
+
+        <!-- Espacio para firma -->
+        <Paragraph Margin="0,40,0,0"> </Paragraph>
+
+        <!-- Firma -->
+        <Paragraph TextAlignment="Center" Margin="0" FontSize="11">
+            <Bold>
+                <Run Text="{Binding FirmaNombre, Mode=OneWay}"/>
+            </Bold>
+            <LineBreak/>
+            <Run Text="{Binding FirmaCargo, Mode=OneWay}"/>
+            <LineBreak/>
+            <Run Text="{Binding FirmaDepartamento, Mode=OneWay}"/>
+        </Paragraph>
+
+    </FlowDocument>
+    
+</ResourceDictionary>
