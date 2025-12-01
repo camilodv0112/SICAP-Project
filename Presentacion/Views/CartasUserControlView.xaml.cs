@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -7,6 +8,9 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Modelos.ModelsDTO.Estudiante;
+using Modelos.ModelsDTO.CartaGenerada;
+using Newtonsoft.Json;
+using Presentacion.ViewModels;
 
 namespace Presentacion.Views
 {
@@ -472,7 +476,7 @@ namespace Presentacion.Views
             DocumentPreviewOverlay.Visibility = Visibility.Collapsed;
         }
 
-        private void PrintDocument(object sender, RoutedEventArgs e)
+        private async void PrintDocument(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -506,11 +510,213 @@ namespace Presentacion.Views
                     printDialog.PrintDocument(documentPaginatorSource.DocumentPaginator, "Carta - SICAP");
                     
                     MessageBox.Show("Documento enviado a la impresora correctamente.", "Impresión", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Guardar en historial
+                    await SaveToHistory();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al imprimir el documento: {ex.Message}", "Error de Impresión", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async Task SaveToHistory()
+        {
+            try
+            {
+                var viewModel = this.DataContext as CartasViewModel;
+                if (viewModel == null) return;
+
+                var datos = new Dictionary<string, object>
+                {
+                    // Transporte
+                    { "NombreSolicitante", NombreSolicitante },
+                    { "DependenciaSolicitante", DependenciaSolicitante },
+                    { "ResponsableActividad", ResponsableActividad },
+                    { "NumeroPasajeros", NumeroPasajeros },
+                    { "DescripcionActividad", DescripcionActividad },
+                    { "Destino", Destino },
+                    { "Departamento", Departamento },
+                    { "Municipio", Municipio },
+                    { "KmAproximados", KmAproximados },
+                    { "FechaSalida", FechaSalida },
+                    { "HoraSalida", HoraSalida },
+                    { "FechaRegreso", FechaRegreso },
+                    { "HoraRegreso", HoraRegreso },
+                    { "TipoVehiculo", TipoVehiculo },
+                    { "NumeroPlaca", NumeroPlaca },
+                    { "ColorVehiculo", ColorVehiculo },
+
+                    // Justificación
+                    { "DestinatarioNombre", DestinatarioNombre },
+                    { "DestinatarioCargo", DestinatarioCargo },
+                    { "DestinatarioInstitucion", DestinatarioInstitucion },
+                    { "FechaEvento", FechaEvento },
+                    { "HoraInicio", HoraInicio },
+                    { "HoraFin", HoraFin },
+                    { "NombreEvento", NombreEvento },
+                    { "DescripcionEvento", DescripcionEvento },
+                    { "DisciplinaEvento", DisciplinaEvento },
+                    { "AsignaturaEstudiante", AsignaturaEstudiante },
+                    // Guardamos el estudiante seleccionado si existe
+                    { "EstudianteSeleccionado", EstudianteSeleccionado },
+
+                    // Recursos/Espacios
+                    { "CantidadRefrigerios", CantidadRefrigerios },
+                    { "NombreActividad", NombreActividad },
+                    { "HoraEvento", HoraEvento },
+
+                    // Comunes
+                    { "TituloDocumento", TituloDocumento },
+                    { "FechaDocumento", FechaDocumento },
+                    { "FirmaNombre", FirmaNombre },
+                    { "FirmaCargo", FirmaCargo },
+                    { "FirmaDepartamento", FirmaDepartamento },
+                    { "NotasAdicionales", NotasAdicionales }
+                };
+
+                var json = JsonConvert.SerializeObject(datos);
+
+                // Mapeo simple de ID de plantilla (asumiendo orden en enum)
+                // JustificacionEstudiante = 0 -> DB 1
+                // SolicitudTransporte = 1 -> DB 2
+                // SolicitudRecursos = 2 -> DB 3
+                // SolicitudEspacios = 3 -> DB 4
+                // Ajustar según IDs reales en BD
+                int plantillaId = (int)_currentTemplateType + 1; 
+                // Nota: JustificacionEstudiante es 0 en enum, pero si en BD es 2, esto fallará.
+                // Asumiremos: 
+                // 1: JustificacionEstudiante
+                // 2: SolicitudTransporte
+                // 3: SolicitudRecursos
+                // 4: SolicitudEspacios
+                // Re-mapeo manual para seguridad:
+                plantillaId = _currentTemplateType switch
+                {
+                    Services.DocumentTemplateType.JustificacionEstudiante => 1,
+                    Services.DocumentTemplateType.SolicitudTransporte => 2,
+                    Services.DocumentTemplateType.SolicitudRecursos => 3,
+                    Services.DocumentTemplateType.SolicitudEspacios => 4,
+                    _ => 1
+                };
+
+                var dto = new CartaGeneradaCreateDTO
+                {
+                    PlantillaId = plantillaId,
+                    NombreCarta = TituloDocumento,
+                    Datos = json,
+                    UsuarioPersonalID = 1, // TODO: Obtener usuario real
+                    FechaGeneracion = DateTime.Now,
+                    RutaPDF = "N/A" // Valor temporal para cumplir validación
+                };
+
+                await viewModel.SaveCartaAsync(dto);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al guardar historial: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ReprintFromHistory(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is CartaGeneradaResponseDTO carta)
+            {
+                try
+                {
+                    var datos = JsonConvert.DeserializeObject<Dictionary<string, object>>(carta.Datos);
+                    if (datos == null) return;
+
+                    // Restaurar propiedades
+                    // Helper local para obtener string seguro
+                    string GetStr(string key) => datos.ContainsKey(key) && datos[key] != null ? datos[key].ToString() : "";
+
+                    NombreSolicitante = GetStr("NombreSolicitante");
+                    DependenciaSolicitante = GetStr("DependenciaSolicitante");
+                    ResponsableActividad = GetStr("ResponsableActividad");
+                    NumeroPasajeros = GetStr("NumeroPasajeros");
+                    DescripcionActividad = GetStr("DescripcionActividad");
+                    Destino = GetStr("Destino");
+                    Departamento = GetStr("Departamento");
+                    Municipio = GetStr("Municipio");
+                    KmAproximados = GetStr("KmAproximados");
+                    FechaSalida = GetStr("FechaSalida");
+                    HoraSalida = GetStr("HoraSalida");
+                    FechaRegreso = GetStr("FechaRegreso");
+                    HoraRegreso = GetStr("HoraRegreso");
+                    TipoVehiculo = GetStr("TipoVehiculo");
+                    NumeroPlaca = GetStr("NumeroPlaca");
+                    ColorVehiculo = GetStr("ColorVehiculo");
+
+                    DestinatarioNombre = GetStr("DestinatarioNombre");
+                    DestinatarioCargo = GetStr("DestinatarioCargo");
+                    DestinatarioInstitucion = GetStr("DestinatarioInstitucion");
+                    FechaEvento = GetStr("FechaEvento");
+                    HoraInicio = GetStr("HoraInicio");
+                    HoraFin = GetStr("HoraFin");
+                    NombreEvento = GetStr("NombreEvento");
+                    DescripcionEvento = GetStr("DescripcionEvento");
+                    DisciplinaEvento = GetStr("DisciplinaEvento");
+                    AsignaturaEstudiante = GetStr("AsignaturaEstudiante");
+                    
+                    // Restaurar EstudianteSeleccionado es complejo porque es un objeto.
+                    // Intentamos deserializarlo si existe
+                    if (datos.ContainsKey("EstudianteSeleccionado") && datos["EstudianteSeleccionado"] != null)
+                    {
+                        try 
+                        {
+                            var estJson = datos["EstudianteSeleccionado"].ToString();
+                            var est = JsonConvert.DeserializeObject<EstudianteCartaInfo>(estJson);
+                            // Buscar si existe en la lista actual para seleccionarlo, o agregarlo
+                            // Por simplicidad, si coincide el carnet, lo seleccionamos
+                            if (est != null)
+                            {
+                                // Lógica simplificada: intentar seleccionar de la lista existente
+                                // Si no está, tal vez agregarlo temporalmente?
+                                // Por ahora, solo seteamos si encontramos coincidencia
+                                foreach(var item in Estudiantes)
+                                {
+                                    if (item.Carnet == est.Carnet)
+                                    {
+                                        EstudianteSeleccionado = item;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        catch { /* Ignorar error al restaurar estudiante */ }
+                    }
+
+                    CantidadRefrigerios = GetStr("CantidadRefrigerios");
+                    NombreActividad = GetStr("NombreActividad");
+                    // HoraEvento ya está arriba
+
+                    TituloDocumento = GetStr("TituloDocumento");
+                    FechaDocumento = GetStr("FechaDocumento");
+                    FirmaNombre = GetStr("FirmaNombre");
+                    FirmaCargo = GetStr("FirmaCargo");
+                    FirmaDepartamento = GetStr("FirmaDepartamento");
+                    NotasAdicionales = GetStr("NotasAdicionales");
+
+                    // Establecer tipo de plantilla
+                    _currentTemplateType = carta.PlantillaId switch
+                    {
+                        1 => Services.DocumentTemplateType.JustificacionEstudiante,
+                        2 => Services.DocumentTemplateType.SolicitudTransporte,
+                        3 => Services.DocumentTemplateType.SolicitudRecursos,
+                        4 => Services.DocumentTemplateType.SolicitudEspacios,
+                        _ => Services.DocumentTemplateType.JustificacionEstudiante
+                    };
+
+                    // Cargar plantilla
+                    LoadDocumentTemplate(_currentTemplateType);
+                    DocumentPreviewOverlay.Visibility = Visibility.Visible;
+                }
+                catch (Exception ex)
+                {
+                     MessageBox.Show($"Error al cargar carta del historial: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -521,24 +727,32 @@ namespace Presentacion.Views
     }
 
     // Wrapper para agregar propiedades adicionales necesarias para cartas
+    // Wrapper para agregar propiedades adicionales necesarias para cartas
     public class EstudianteCartaInfo
     {
-        private readonly EstudianteResponseDTO _dto;
-        private readonly string _motivo;
+        public string Nombre { get; set; }
+        public string Carnet { get; set; }
+        public string Carrera { get; set; }
+        public string Año { get; set; }
+        public string Grupo { get; set; }
+        public string Disciplina { get; set; }
+        public string Motivo { get; set; }
+        public string DisplayText => $"{Nombre} - {Carnet}";
+
+        public EstudianteCartaInfo() { }
 
         public EstudianteCartaInfo(EstudianteResponseDTO dto, string motivo)
         {
-            _dto = dto;
-            _motivo = motivo;
+            if (dto != null)
+            {
+                Nombre = dto.NombreCompleto;
+                Carnet = dto.Carnet;
+                Carrera = dto.CarreraNombre;
+                Año = dto.Año.ToString() + "°";
+                Grupo = dto.Grupo;
+                Disciplina = dto.DisciplinaNombre;
+            }
+            Motivo = motivo;
         }
-
-        public string Nombre => _dto.NombreCompleto;
-        public string Carnet => _dto.Carnet;
-        public string Carrera => _dto.CarreraNombre;
-        public string Año => _dto.Año.ToString() + "°";
-        public string Grupo => _dto.Grupo;
-        public string Disciplina => _dto.DisciplinaNombre;
-        public string Motivo => _motivo;
-        public string DisplayText => $"{_dto.NombreCompleto} - {_dto.Carnet}";
     }
 }

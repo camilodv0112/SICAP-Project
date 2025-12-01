@@ -7,145 +7,217 @@
              d:DesignHeight="720" d:DesignWidth="1000">
     
     <Grid Background="White" Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/> <!-- Header -->
-            <RowDefinition Height="*"/>    <!-- Documents -->
-        </Grid.RowDefinitions>
+        <TabControl BorderThickness="0" Background="Transparent">
+            <TabItem Header="Generar Cartas" FontSize="14" FontWeight="Bold" Padding="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Header -->
+                        <RowDefinition Height="*"/>    <!-- Documents -->
+                    </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,30">
-            <TextBlock Text="Cartas y Solicitudes" 
-                       FontFamily="Verdana" 
-                       FontSize="24" 
-                       FontWeight="Bold" 
-                       Foreground="#002898"/>
-            <TextBlock Text="Documentos y cartas generadas por el sistema" 
-                       FontFamily="Arial" 
-                       FontSize="14" 
-                       Foreground="#555555"
-                       Margin="0,5,0,0"/>
-        </StackPanel>
+                    <!-- Header -->
+                    <StackPanel Grid.Row="0" Margin="0,0,0,30">
+                        <TextBlock Text="Cartas y Solicitudes" 
+                                   FontFamily="Verdana" 
+                                   FontSize="24" 
+                                   FontWeight="Bold" 
+                                   Foreground="#002898"/>
+                        <TextBlock Text="Documentos y cartas generadas por el sistema" 
+                                   FontFamily="Arial" 
+                                   FontSize="14" 
+                                   Foreground="#555555"
+                                   Margin="0,5,0,0"/>
+                    </StackPanel>
 
-        <!-- Document Cards -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                
-                <!-- Card 1: Solicitud de Transporte -->
-                <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
-                        CornerRadius="8" Margin="10" Width="210" Height="280">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#000000" Opacity="0.15" BlurRadius="10" ShadowDepth="3"/>
-                    </Border.Effect>
-                    <Grid>
-                        <Border Background="#002898" Height="40" VerticalAlignment="Top" CornerRadius="8,8,0,0">
-                            <TextBlock Text="🚗" FontSize="20" VerticalAlignment="Center" 
-                                       HorizontalAlignment="Center" Foreground="White"/>
-                        </Border>
-                        <StackPanel Margin="15,50,15,15">
-                            <TextBlock Text="Solicitud de Transporte" 
-                                       FontFamily="Verdana" FontSize="13" FontWeight="Bold" 
-                                       Foreground="#111111" TextWrapping="Wrap" Margin="0,0,0,10"/>
-                            <TextBlock Text="Para actividades y eventos" 
-                                       FontFamily="Arial" FontSize="11" Foreground="#757575"
-                                       TextWrapping="Wrap" Margin="0,0,0,15"/>
-                            <Separator Background="#EEEEEE" Margin="0,10"/>
-                            <Button Content="Generar Solicitud" Background="#002898" Foreground="White"
-                                    FontFamily="Verdana" FontSize="12" Padding="10,5"
-                                    BorderThickness="0" Cursor="Hand" Margin="0,10,0,0"
-                                    Tag="SolicitudTransporte"
-                                    Click="OpenDocumentPreview"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
+                    <!-- Document Cards -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            
+                            <!-- Card 1: Solicitud de Transporte -->
+                            <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
+                                    CornerRadius="8" Margin="10" Width="210" Height="280">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#000000" Opacity="0.15" BlurRadius="10" ShadowDepth="3"/>
+                                </Border.Effect>
+                                <Grid>
+                                    <Border Background="#002898" Height="40" VerticalAlignment="Top" CornerRadius="8,8,0,0">
+                                        <TextBlock Text="🚗" FontSize="20" VerticalAlignment="Center" 
+                                                   HorizontalAlignment="Center" Foreground="White"/>
+                                    </Border>
+                                    <StackPanel Margin="15,50,15,15">
+                                        <TextBlock Text="Solicitud de Transporte" 
+                                                   FontFamily="Verdana" FontSize="13" FontWeight="Bold" 
+                                                   Foreground="#111111" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                        <TextBlock Text="Para actividades y eventos" 
+                                                   FontFamily="Arial" FontSize="11" Foreground="#757575"
+                                                   TextWrapping="Wrap" Margin="0,0,0,15"/>
+                                        <Separator Background="#EEEEEE" Margin="0,10"/>
+                                        <Button Content="Generar Solicitud" Background="#002898" Foreground="White"
+                                                FontFamily="Verdana" FontSize="12" Padding="10,5"
+                                                BorderThickness="0" Cursor="Hand" Margin="0,10,0,0"
+                                                Tag="SolicitudTransporte"
+                                                Click="OpenDocumentPreview"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
 
-                <!-- Card 2: Justificación de Estudiante -->
-                <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
-                        CornerRadius="8" Margin="10" Width="210" Height="280">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#000000" Opacity="0.15" BlurRadius="10" ShadowDepth="3"/>
-                    </Border.Effect>
-                    <Grid>
-                        <Border Background="#204BB2" Height="40" VerticalAlignment="Top" CornerRadius="8,8,0,0">
-                            <TextBlock Text="📄" FontSize="20" VerticalAlignment="Center" 
-                                       HorizontalAlignment="Center" Foreground="White"/>
-                        </Border>
-                        <StackPanel Margin="15,50,15,15">
-                            <TextBlock Text="Justificación de Estudiante" 
-                                       FontFamily="Verdana" FontSize="13" FontWeight="Bold" 
-                                       Foreground="#111111" TextWrapping="Wrap" Margin="0,0,0,10"/>
-                            <TextBlock Text="Carta de justificación de inasistencia" 
-                                       FontFamily="Arial" FontSize="11" Foreground="#757575"
-                                       TextWrapping="Wrap" Margin="0,0,0,15"/>
-                            <Separator Background="#EEEEEE" Margin="0,10"/>
-                            <Button Content="Generar Carta" Background="#204BB2" Foreground="White"
-                                    FontFamily="Verdana" FontSize="12" Padding="10,5"
-                                    BorderThickness="0" Cursor="Hand" Margin="0,10,0,0"
-                                    Tag="JustificacionEstudiante"
-                                    Click="OpenDocumentPreview"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
+                            <!-- Card 2: Justificación de Estudiante -->
+                            <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
+                                    CornerRadius="8" Margin="10" Width="210" Height="280">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#000000" Opacity="0.15" BlurRadius="10" ShadowDepth="3"/>
+                                </Border.Effect>
+                                <Grid>
+                                    <Border Background="#204BB2" Height="40" VerticalAlignment="Top" CornerRadius="8,8,0,0">
+                                        <TextBlock Text="📄" FontSize="20" VerticalAlignment="Center" 
+                                                   HorizontalAlignment="Center" Foreground="White"/>
+                                    </Border>
+                                    <StackPanel Margin="15,50,15,15">
+                                        <TextBlock Text="Justificación de Estudiante" 
+                                                   FontFamily="Verdana" FontSize="13" FontWeight="Bold" 
+                                                   Foreground="#111111" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                        <TextBlock Text="Carta de justificación de inasistencia" 
+                                                   FontFamily="Arial" FontSize="11" Foreground="#757575"
+                                                   TextWrapping="Wrap" Margin="0,0,0,15"/>
+                                        <Separator Background="#EEEEEE" Margin="0,10"/>
+                                        <Button Content="Generar Carta" Background="#204BB2" Foreground="White"
+                                                FontFamily="Verdana" FontSize="12" Padding="10,5"
+                                                BorderThickness="0" Cursor="Hand" Margin="0,10,0,0"
+                                                Tag="JustificacionEstudiante"
+                                                Click="OpenDocumentPreview"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
 
-                <!-- Card 3: Solicitud de Recursos/Refrigerios -->
-                <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
-                        CornerRadius="8" Margin="10" Width="210" Height="280">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#000000" Opacity="0.15" BlurRadius="10" ShadowDepth="3"/>
-                    </Border.Effect>
-                    <Grid>
-                        <Border Background="#002898" Height="40" VerticalAlignment="Top" CornerRadius="8,8,0,0">
-                            <TextBlock Text="🍽️" FontSize="20" VerticalAlignment="Center" 
-                                       HorizontalAlignment="Center" Foreground="White"/>
-                        </Border>
-                        <StackPanel Margin="15,50,15,15">
-                            <TextBlock Text="Solicitud de Recursos/Refrigerios" 
-                                       FontFamily="Verdana" FontSize="13" FontWeight="Bold" 
-                                       Foreground="#111111" TextWrapping="Wrap" Margin="0,0,0,10"/>
-                            <TextBlock Text="Para eventos y actividades" 
-                                       FontFamily="Arial" FontSize="11" Foreground="#757575"
-                                       TextWrapping="Wrap" Margin="0,0,0,15"/>
-                            <Separator Background="#EEEEEE" Margin="0,10"/>
-                            <Button Content="Generar Solicitud" Background="#002898" Foreground="White"
-                                    FontFamily="Verdana" FontSize="12" Padding="10,5"
-                                    BorderThickness="0" Cursor="Hand" Margin="0,10,0,0"
-                                    Tag="SolicitudRecursos"
-                                    Click="OpenDocumentPreview"
-                            />
-                        </StackPanel>
-                    </Grid>
-                </Border>
+                            <!-- Card 3: Solicitud de Recursos/Refrigerios -->
+                            <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
+                                    CornerRadius="8" Margin="10" Width="210" Height="280">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#000000" Opacity="0.15" BlurRadius="10" ShadowDepth="3"/>
+                                </Border.Effect>
+                                <Grid>
+                                    <Border Background="#002898" Height="40" VerticalAlignment="Top" CornerRadius="8,8,0,0">
+                                        <TextBlock Text="🍽️" FontSize="20" VerticalAlignment="Center" 
+                                                   HorizontalAlignment="Center" Foreground="White"/>
+                                    </Border>
+                                    <StackPanel Margin="15,50,15,15">
+                                        <TextBlock Text="Solicitud de Recursos/Refrigerios" 
+                                                   FontFamily="Verdana" FontSize="13" FontWeight="Bold" 
+                                                   Foreground="#111111" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                        <TextBlock Text="Para eventos y actividades" 
+                                                   FontFamily="Arial" FontSize="11" Foreground="#757575"
+                                                   TextWrapping="Wrap" Margin="0,0,0,15"/>
+                                        <Separator Background="#EEEEEE" Margin="0,10"/>
+                                        <Button Content="Generar Solicitud" Background="#002898" Foreground="White"
+                                                FontFamily="Verdana" FontSize="12" Padding="10,5"
+                                                BorderThickness="0" Cursor="Hand" Margin="0,10,0,0"
+                                                Tag="SolicitudRecursos"
+                                                Click="OpenDocumentPreview"
+                                        />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
 
-                <!-- Card 4: Solicitud de Espacios -->
-                <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
-                        CornerRadius="8" Margin="10" Width="210" Height="280">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#000000" Opacity="0.15" BlurRadius="10" ShadowDepth="3"/>
-                    </Border.Effect>
-                    <Grid>
-                        <Border Background="#204BB2" Height="40" VerticalAlignment="Top" CornerRadius="8,8,0,0">
-                            <TextBlock Text="🏛️" FontSize="20" VerticalAlignment="Center" 
-                                       HorizontalAlignment="Center" Foreground="White"/>
-                        </Border>
-                        <StackPanel Margin="15,50,15,15">
-                            <TextBlock Text="Solicitud de Espacios" 
-                                       FontFamily="Verdana" FontSize="13" FontWeight="Bold" 
-                                       Foreground="#111111" TextWrapping="Wrap" Margin="0,0,0,10"/>
-                            <TextBlock Text="Reserva de salas y espacios" 
-                                       FontFamily="Arial" FontSize="11" Foreground="#757575"
-                                       TextWrapping="Wrap" Margin="0,0,0,15"/>
-                            <Separator Background="#EEEEEE" Margin="0,10"/>
-                            <Button Content="Generar Solicitud" Background="#204BB2" Foreground="White"
-                                    FontFamily="Verdana" FontSize="12" Padding="10,5"
-                                    BorderThickness="0" Cursor="Hand" Margin="0,10,0,0"
-                                    Tag="SolicitudEspacios"
-                                    Click="OpenDocumentPreview"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
+                            <!-- Card 4: Solicitud de Espacios -->
+                            <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
+                                    CornerRadius="8" Margin="10" Width="210" Height="280">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#000000" Opacity="0.15" BlurRadius="10" ShadowDepth="3"/>
+                                </Border.Effect>
+                                <Grid>
+                                    <Border Background="#204BB2" Height="40" VerticalAlignment="Top" CornerRadius="8,8,0,0">
+                                        <TextBlock Text="🏛️" FontSize="20" VerticalAlignment="Center" 
+                                                   HorizontalAlignment="Center" Foreground="White"/>
+                                    </Border>
+                                    <StackPanel Margin="15,50,15,15">
+                                        <TextBlock Text="Solicitud de Espacios" 
+                                                   FontFamily="Verdana" FontSize="13" FontWeight="Bold" 
+                                                   Foreground="#111111" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                        <TextBlock Text="Reserva de salas y espacios" 
+                                                   FontFamily="Arial" FontSize="11" Foreground="#757575"
+                                                   TextWrapping="Wrap" Margin="0,0,0,15"/>
+                                        <Separator Background="#EEEEEE" Margin="0,10"/>
+                                        <Button Content="Generar Solicitud" Background="#204BB2" Foreground="White"
+                                                FontFamily="Verdana" FontSize="12" Padding="10,5"
+                                                BorderThickness="0" Cursor="Hand" Margin="0,10,0,0"
+                                                Tag="SolicitudEspacios"
+                                                Click="OpenDocumentPreview"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
 
 
-            </WrapPanel>
-        </ScrollViewer>
+                        </WrapPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Historial" FontSize="14" FontWeight="Bold" Padding="10">
+                <Grid Margin="0,20,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+                        <Button Content="🔄 Recargar" Command="{Binding LoadHistorialCommand}" 
+                                Background="#4CAF50" Foreground="White" Padding="15,8" BorderThickness="0" Cursor="Hand">
+                             <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding Historial}" AutoGenerateColumns="False" IsReadOnly="True"
+                              HeadersVisibility="Column" GridLinesVisibility="Horizontal" Background="White" RowHeight="35"
+                              BorderBrush="#E0E0E0" BorderThickness="1">
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#F5F5F5"/>
+                                <Setter Property="Foreground" Value="#111111"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Padding" Value="10"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                            </Style>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Padding" Value="10,0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="DataGridCell">
+                                            <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                            <DataGridTextColumn Header="Fecha" Binding="{Binding FechaGeneracion, StringFormat=dd/MM/yyyy HH:mm}" Width="150"/>
+                            <DataGridTextColumn Header="Nombre Carta" Binding="{Binding NombreCarta}" Width="*"/>
+                            <DataGridTextColumn Header="Generado Por" Binding="{Binding UsuarioPersonalNombre}" Width="200"/>
+                            <DataGridTemplateColumn Header="Acciones" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Ver" Click="ReprintFromHistory" Tag="{Binding}" 
+                                                Background="#002898" Foreground="White" Padding="10,5" BorderThickness="0" Cursor="Hand">
+                                             <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="4"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
 
         <!-- Document Preview Overlay (existing overlay unchanged)-->
         <Border x:Name="DocumentPreviewOverlay" Background="#CC000000" Visibility="Collapsed" Grid.RowSpan="2">

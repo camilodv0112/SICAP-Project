@@ -13,8 +13,10 @@ public class CartaGeneradaCreateDTO
     public string Datos { get; set; }
 
     [MaxLength(255)]
-    public string RutaPDF { get; set; }
+    public string? RutaPDF { get; set; }
 
     [Required]
     public int UsuarioPersonalID { get; set; }
+
+    public DateTime? FechaGeneracion { get; set; }
 }
