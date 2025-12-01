@@ -152,6 +152,9 @@ namespace Presentacion.ViewModels
                 var disciplinas = await _apiClient.DisciplinaArtistica.GetAllAsync();
                 DisciplinasDisponibles.Clear();
                 foreach (var d in disciplinas) DisciplinasDisponibles.Add(d);
+
+                // DEBUG: Verificar conteos
+                // MessageBox.Show($"Cargados: {MunicipiosDisponibles.Count} Municipios, {CargosDisponibles.Count} Cargos, {DisciplinasDisponibles.Count} Disciplinas", "Debug", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {

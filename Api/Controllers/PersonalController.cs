@@ -26,7 +26,7 @@ public class PersonalController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        var personal = await _repository.GetByIdAsync(id);
+        var personal = await _repository.GetAsync(p => p.PersonalID == id, includeProperties: "CargoNavigation,DisciplinaNavigation,MunicipioNavigation");
         if (personal == null)
             return NotFound(new { Message = "Personal no encontrado." });
 
@@ -38,7 +38,7 @@ public class PersonalController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
-        var personal = await _repository.GetAllAsync();
+        var personal = await _repository.GetAllAsync(includeProperties: "CargoNavigation,DisciplinaNavigation,MunicipioNavigation");
         var dtos = _mapper.Map<List<PersonalResponseDTO>>(personal);
         return Ok(dtos);
     }

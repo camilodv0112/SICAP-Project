@@ -26,7 +26,7 @@ public class EstudianteController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        var estudiante = await _repository.GetByIdAsync(id);
+        var estudiante = await _repository.GetAsync(e => e.EstudianteID == id, includeProperties: "CarreraNavigation,DisciplinaNavigation,MunicipioNavigation");
         if (estudiante == null)
             return NotFound(new { Message = "Estudiante no encontrado." });
 
@@ -38,7 +38,7 @@ public class EstudianteController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
-        var estudiantes = await _repository.GetAllAsync();
+        var estudiantes = await _repository.GetAllAsync(includeProperties: "CarreraNavigation,DisciplinaNavigation,MunicipioNavigation");
         var dtos = _mapper.Map<List<EstudianteResponseDTO>>(estudiantes);
         return Ok(dtos);
     }

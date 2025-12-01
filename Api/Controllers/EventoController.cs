@@ -37,7 +37,7 @@ public class EventoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        var evento = await _repository.GetByIdAsync(id);
+        var evento = await _repository.GetAsync(e => e.EventoID == id, includeProperties: "SalonNavigation.Sede,Participantes,Responsables");
         if (evento == null)
             return NotFound(new { Message = "Evento no encontrado." });
 
@@ -49,7 +49,7 @@ public class EventoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
-        var eventos = await _repository.GetAllAsync();
+        var eventos = await _repository.GetAllAsync(includeProperties: "SalonNavigation.Sede,Participantes,Responsables");
         var dtos = _mapper.Map<List<EventoResponseDTO>>(eventos);
         return Ok(dtos);
     }
