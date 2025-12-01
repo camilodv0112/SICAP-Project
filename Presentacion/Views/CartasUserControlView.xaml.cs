@@ -287,75 +287,36 @@ namespace Presentacion.Views
 
         private Services.DocumentTemplateType _currentTemplateType = Services.DocumentTemplateType.JustificacionEstudiante;
 
-        public ObservableCollection<EstudianteCartaInfo> Estudiantes { get; set; }
-
+        public ObservableCollection<EstudianteCartaInfo> Estudiantes { get; set; } = new ObservableCollection<EstudianteCartaInfo>();
+        
         public CartasUserControlView()
         {
             InitializeComponent();
+            this.Loaded += CartasUserControlView_Loaded;
+        }
 
-            // Datos de prueba basados en EstudianteResponseDTO
-            Estudiantes = new ObservableCollection<EstudianteCartaInfo>
+        private void CartasUserControlView_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext is CartasViewModel viewModel)
             {
-                new EstudianteCartaInfo(
-                    new EstudianteResponseDTO
-                    {
-                        NombreCompleto = "Juan Pérez",
-                        Carnet = "2021-0001U",
-                        CarreraNombre = "Ingeniería de Sistemas",
-                        Año = 3,
-                        Grupo = "3M1-IS",
-                        DisciplinaNombre = "Danza Folclórica"
-                    },
-                    "Incapacidad médica"
-                ),
-                new EstudianteCartaInfo(
-                    new EstudianteResponseDTO
-                    {
-                        NombreCompleto = "María González",
-                        Carnet = "2022-0045U",
-                        CarreraNombre = "Arquitectura",
-                        Año = 2,
-                        Grupo = "2T1-ARQ",
-                        DisciplinaNombre = "Teatro"
-                    },
-                    "Viaje académico"
-                ),
-                new EstudianteCartaInfo(
-                    new EstudianteResponseDTO
-                    {
-                        NombreCompleto = "Carlos López",
-                        Carnet = "2020-0123U",
-                        CarreraNombre = "Ingeniería Civil",
-                        Año = 4,
-                        Grupo = "4M2-IC",
-                        DisciplinaNombre = "Música"
-                    },
-                    "Compromiso familiar"
-                )
-            };
+                // Sincronizar estudiantes cuando cambie la colección del ViewModel
+                viewModel.Estudiantes.CollectionChanged += (s, args) => UpdateEstudiantesList(viewModel);
+                
+                // Carga inicial si ya hay datos
+                if (viewModel.Estudiantes.Count > 0)
+                {
+                    UpdateEstudiantesList(viewModel);
+                }
+            }
+        }
 
-            EstudianteSeleccionado = Estudiantes[0]; // Juan Pérez por defecto
-
-            // Valores de prueba para justificación
-            DestinatarioNombre = "Silvio Solorzano Mondy";
-            DestinatarioCargo = "Transferencia de calor";
-            DestinatarioInstitucion = "UNI-RUPAP";
-            FechaEvento = "27 de marzo";
-            HoraInicio = "07:00 am";
-            HoraFin = "04:00 pm";
-            NombreEvento = "Día Internacional del Teatro y Natalicio del Poeta Guerrillero \"Leonel Rugama\"";
-            DisciplinaEvento = "Teatro";
-            AsignaturaEstudiante = "Transferencia de Calor";
-
-            // Actualizar valores de firma para Solicitud de Espacios
-            FirmaNombre = "Cleopatra Dadmira Morales Montiel";
-            FirmaCargo = "Jefa de Departamento de Cultura";
-
-            // Valores de prueba para Solicitud de Recursos/Refrigerios
-            CantidadRefrigerios = "90";
-            NombreActividad = "Festival de Bienvenida a las Fiestas Patrias. \"Todo San Jacinto\"";
-            HoraEvento = "04:00 pm";
-
+        private void UpdateEstudiantesList(CartasViewModel viewModel)
+        {
+            Estudiantes.Clear();
+            foreach (var est in viewModel.Estudiantes)
+            {
+                Estudiantes.Add(new EstudianteCartaInfo(est, ""));
+            }
         }
             
             // DataContext = this; // Removed to allow ViewModel injection

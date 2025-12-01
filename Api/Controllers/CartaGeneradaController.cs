@@ -26,7 +26,7 @@ public class CartaGeneradaController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        var carta = await _repository.GetByIdAsync(id);
+        var carta = await _repository.GetAsync(c => c.Id == id, includeProperties: "Plantilla,UsuarioPersonal.PersonalNavigation");
         if (carta == null)
             return NotFound(new { Message = "Carta generada no encontrada." });
 
@@ -38,7 +38,7 @@ public class CartaGeneradaController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
-        var cartas = await _repository.GetAllAsync();
+        var cartas = await _repository.GetAllAsync(includeProperties: "Plantilla,UsuarioPersonal.PersonalNavigation");
         var dtos = _mapper.Map<List<CartaGeneradaResponseDTO>>(cartas);
         return Ok(dtos);
     }

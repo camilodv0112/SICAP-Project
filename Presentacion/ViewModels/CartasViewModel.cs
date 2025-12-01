@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Modelos.ModelsDTO.CartaGenerada;
 using Presentacion.Core;
+using Modelos.ModelsDTO.Estudiante;
 
 namespace Presentacion.ViewModels
 {
@@ -11,6 +12,7 @@ namespace Presentacion.ViewModels
         private readonly ApiClient _apiClient;
 
         public ObservableCollection<CartaGeneradaResponseDTO> Historial { get; set; } = new();
+        public ObservableCollection<EstudianteResponseDTO> Estudiantes { get; set; } = new();
 
         public ICommand LoadHistorialCommand { get; }
         public ICommand SaveCartaCommand { get; }
@@ -21,6 +23,25 @@ namespace Presentacion.ViewModels
             LoadHistorialCommand = new RelayCommand(async _ => await LoadHistorialAsync());
             SaveCartaCommand = new RelayCommand<CartaGeneradaCreateDTO>(async (dto) => await SaveCartaAsync(dto));
             _ = LoadHistorialAsync();
+            _ = LoadEstudiantesAsync();
+        }
+
+        public async Task LoadEstudiantesAsync()
+        {
+            try
+            {
+                var estudiantes = await _apiClient.Estudiante.GetAllAsync();
+                Estudiantes.Clear();
+                foreach (var est in estudiantes.OrderBy(e => e.NombreCompleto))
+                {
+                    Estudiantes.Add(est);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Silently fail or log, as this runs on init
+                Console.WriteLine($"Error loading students: {ex.Message}");
+            }
         }
 
         public async Task LoadHistorialAsync()
